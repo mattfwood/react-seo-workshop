@@ -1,31 +1,46 @@
-import React from 'react'
+import React, { Component } from 'react'
 import Link from 'next/link'
 import axios from 'axios';
 import Head from '../components/head'
 import Nav from '../components/nav'
 
-const AboutPage = ({ repos }) => {
-  return (
-    <div>
-      <Head title="Home" />
-      <Nav />
+class AboutPage extends Component {
+  async static getInitialProps () {
+    const res = await axios.get('https://api.github.com/users/bvaughn/repos');
 
-      <main className="hero">
-        <h1 className="title">About Us</h1>
+    return {
+      repos: res.data.map(({ id, name, description }) => ({ id, name, description })).slice(0, 9),
+    }
+  }
 
-        <div className="row">
-          {repos.map(repo => (
-            <Link href="/" key={repo.id}>
-              <a className="card">
-                <h3>{repo.name}</h3>
-                <p>Learn more about Next on Github and in their examples</p>
-              </a>
-            </Link>
-          ))}
-        </div>
-      </main>
+  componentDidMount() {
+    document.title = 'About Page'
+  }
 
-      <style jsx>{`
+  render() {
+    const { repos } = this.props;
+
+    return (
+      <div>
+        <Head title="Home" />
+        <Nav />
+
+        <main className="hero">
+          <h1 className="title">Brian Vaughn Repos</h1>
+
+          <div className="row">
+            {repos.map(repo => (
+              <Link href="/" key={repo.id}>
+                <a className="card">
+                  <h3>{repo.name}</h3>
+                  <p>{repo.description}</p>
+                </a>
+              </Link>
+            ))}
+          </div>
+        </main>
+
+        <style jsx>{`
       .hero {
         width: 100%;
         color: #333;
@@ -73,16 +88,21 @@ const AboutPage = ({ repos }) => {
         color: #333;
       }
     `}</style>
-    </div>
-  )
-};
-
-AboutPage.getInitialProps = async () => {
-  const res = await axios.get('https://api.github.com/users/bvaughn/repos');
-
-  return {
-    repos: res.data,
+      </div>
+    )
   }
 }
+
+// const AboutPage = ({ repos }) => {
+
+// };
+
+// AboutPage.getInitialProps = async () => {
+//   const res = await axios.get('https://api.github.com/users/bvaughn/repos');
+
+//   return {
+//     repos: res.data.map(({ id, name, description }) => ({ id, name, description })).slice(0, 9),
+//   }
+// }
 
 export default AboutPage
