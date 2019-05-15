@@ -1,15 +1,14 @@
 {
-  "name": "head-elements",
-  "version": "1.0.0",
+  "name": "create-next-example-app",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "next": "^8.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
-  },
-  "license": "ISC"
+  }
 }

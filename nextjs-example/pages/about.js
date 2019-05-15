@@ -1,27 +1,31 @@
 import React from 'react'
 import Link from 'next/link'
+import axios from 'axios';
 import Head from '../components/head'
 import Nav from '../components/nav'
 
-const Home = () => (
-  <div>
-    <Head title="Home" />
-    <Nav />
+const AboutPage = ({ repos }) => {
+  return (
+    <div>
+      <Head title="Home" />
+      <Nav />
 
-    <main className="hero">
-      <h1 className="title">Welcome to Next!</h1>
+      <main className="hero">
+        <h1 className="title">About Us</h1>
 
-      <div className="row">
-        <Link href="/about">
-          <a className="card">
-            <h3>About Page</h3>
-            <p>Learn more about Next on Github and in their examples</p>
-          </a>
-        </Link>
-      </div>
-    </main>
+        <div className="row">
+          {repos.map(repo => (
+            <Link href="/" key={repo.id}>
+              <a className="card">
+                <h3>{repo.name}</h3>
+                <p>Learn more about Next on Github and in their examples</p>
+              </a>
+            </Link>
+          ))}
+        </div>
+      </main>
 
-    <style jsx>{`
+      <style jsx>{`
       .hero {
         width: 100%;
         color: #333;
@@ -43,6 +47,7 @@ const Home = () => (
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        flex-wrap: wrap;
       }
       .card {
         padding: 18px 18px 24px;
@@ -51,6 +56,7 @@ const Home = () => (
         text-decoration: none;
         color: #434343;
         border: 1px solid #9b9b9b;
+        margin-bottom: 10px;
       }
       .card:hover {
         border-color: #067df7;
@@ -67,7 +73,16 @@ const Home = () => (
         color: #333;
       }
     `}</style>
-  </div>
-)
+    </div>
+  )
+};
 
-export default Home
+AboutPage.getInitialProps = async () => {
+  const res = await axios.get('https://api.github.com/users/bvaughn/repos');
+
+  return {
+    repos: res.data,
+  }
+}
+
+export default AboutPage
