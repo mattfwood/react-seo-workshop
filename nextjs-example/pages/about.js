@@ -5,7 +5,7 @@ import Head from '../components/head'
 import Nav from '../components/nav'
 
 class AboutPage extends Component {
-  async static getInitialProps () {
+  static async getInitialProps () {
     const res = await axios.get('https://api.github.com/users/bvaughn/repos');
 
     return {
@@ -22,7 +22,7 @@ class AboutPage extends Component {
 
     return (
       <div>
-        <Head title="Home" />
+        <Head title="About" />
         <Nav />
 
         <main className="hero">
